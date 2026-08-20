@@ -1,6 +1,6 @@
 package com.sync.webdav.ui
 
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
@@ -74,6 +74,7 @@ fun MainScreen(
     )
 
     Scaffold(
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState) { data ->
                 Snackbar(
@@ -85,7 +86,9 @@ fun MainScreen(
             }
         },
         bottomBar = {
-            NavigationBar {
+            NavigationBar(
+                windowInsets = NavigationBarDefaults.windowInsets
+            ) {
                 navItems.forEach { item ->
                     val isSelected = currentScreen.route == item.route
                     NavigationBarItem(
@@ -103,7 +106,11 @@ fun MainScreen(
             }
         }
     ) { innerPadding ->
-        Surface(modifier = Modifier.padding(innerPadding)) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = innerPadding.calculateBottomPadding())
+        ) {
             when (currentScreen) {
                 BottomNavItem.Home -> HomeScreen(
                     progressState = progressState,
